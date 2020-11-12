@@ -20,6 +20,7 @@ RUN pip install --upgrade pip
 # install selenium
 RUN pip install selenium lxml bs4 pandas boto3
 RUN apt-get update && apt-get install -y git 
+RUN pwd
 RUN git clone https://github.com/galigutta/earn-date.git
 
 WORKDIR /earn-date
@@ -29,4 +30,4 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 #ADD user.js /moz-headless/
 
-ENTRYPOINT ["sh","-c","chmod +x startscript.sh && ./startscript.sh"]
+ENTRYPOINT ["sh","-c","git pull origin main && chmod +x startscript.sh && ./startscript.sh"]

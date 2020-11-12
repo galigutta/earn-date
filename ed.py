@@ -23,7 +23,7 @@ fname = 'et.csv'
 s3 = boto3.client('s3')
 
 df = pd.read_csv(fname,header = None)
-tl = list(df[0])[:3]
+tl = list(df[0])[:2]
 dfEar = pd.DataFrame(columns = ['Ticker','Date'])
 
 driver = webdriver.Chrome(options=set_chrome_options())
@@ -33,7 +33,7 @@ for i in tl:
     print(url)
     driver.get(url)
     driver.implicitly_wait(10)
-    soup = BeautifulSoup(driver.page_source)
+    soup = BeautifulSoup(driver.page_source, features="lxml")
     table = soup.find_all('table')[1]
     rows = table.find_all('tr')
     print(i)
