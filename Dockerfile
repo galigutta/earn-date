@@ -18,21 +18,15 @@ ENV DISPLAY=:99
 RUN pip install --upgrade pip
 
 # install selenium
-RUN pip install selenium lxml bs4 pandas
+RUN pip install selenium lxml bs4 pandas boto3
 RUN apt-get update && apt-get install -y git 
 RUN git clone https://github.com/galigutta/earn-date.git
 
 WORKDIR /earn-date
-
-RUN echo "#!/bin/bash" > startscript.sh
-RUN echo "wget https://earn-dt.s3.amazonaws.com/et.csv" >> startscript.sh
-RUN echo "git pull origin main" >> startscript.sh
-RUN echo "head et.csv" >> startscript.sh
-RUN chmod +x startscript.sh
 
 ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 #ADD user.js /moz-headless/
 
-ENTRYPOINT ["sh","-c","./startscript.sh"]
+ENTRYPOINT ["sh","-c","chmod +x startscript.sh && ./startscript.sh"]
