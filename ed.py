@@ -10,7 +10,7 @@ df = pd.read_csv(fname,header = None)
 tl = list(df[0])[:3]
 dfEar = pd.DataFrame(columns = ['Ticker','Date'])
 
-driver = webdriver.Firefox(executable_path='/opt/firefox/firefox')
+driver = webdriver.Chrome()
 
 for i in tl:
     url = 'https://ycharts.com/companies/'+i+'/events/#/?eventTypes=earnings,&pageNum=1'
