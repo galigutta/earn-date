@@ -26,6 +26,6 @@ for i in tl:
         row = [i.text for i in th]
         ed = row[0].strip()
         dfEar = dfEar.append(pd.DataFrame([[i,ed]],columns = ['Ticker','Date']))
-    sleep(100)
+    sleep(10)
 
 dfEar.to_csv('earDateYC.csv', index = False)
