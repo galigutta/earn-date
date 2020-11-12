@@ -5,9 +5,9 @@ from selenium import webdriver
 import pandas as pd
 
 
-fname = '~/temp/tickers.txt'
+fname = 'et.csv'
 df = pd.read_csv(fname,header = None)
-tl = list(df[0])
+tl = list(df[0])[:3]
 dfEar = pd.DataFrame(columns = ['Ticker','Date'])
 
 driver = webdriver.Firefox()
@@ -28,4 +28,4 @@ for i in tl:
         dfEar = dfEar.append(pd.DataFrame([[i,ed]],columns = ['Ticker','Date']))
     sleep(100)
 
-dfEar.to_csv('~/temp/earDateYC.csv', index = False)
+dfEar.to_csv('earDateYC.csv', index = False)

@@ -47,13 +47,15 @@ RUN apt-get update \
  && pip3 install lxml==4.6.1 beautifulsoup4==4.9.3 bs4==0.0.1 soupsieve==2.0.1 numpy==1.19.4 pandas==1.1.4 python-dateutil==2.8.1 pytz==2020.4 \
  && pip3 install certifi==2020.11.8 chardet==3.0.4 edgar==5.4.1 fuzzywuzzy==0.18.0 idna==2.10 python-levenshtein==0.12.0 requests==2.25.0 tqdm==4.51.0 urllib3==1.26.1
 
-RUN apt-get update && apt-get install -y git \
- && git clone https://github.com/galigutta/earn-date.git
+RUN apt-get update && apt-get install -y git 
+RUN git clone https://github.com/galigutta/earn-date.git
 
 WORKDIR /earn-date
 
-RUN echo "#!/bin/bash\n" > startscript.sh
-RUN echo "wget https://earn-dt.s3.amazonaws.com/et.csv" > startscript.sh
+RUN echo "#!/bin/bash" > startscript.sh
+RUN echo "wget https://earn-dt.s3.amazonaws.com/et.csv" >> startscript.sh
+RUN echo "git pull origin main" >> startscript.sh
+RUN echo "head et.csv" >> startscript.sh
 RUN chmod +x startscript.sh
 
 ENV TZ=America/New_York
