@@ -18,7 +18,7 @@ ENV DISPLAY=:99
 RUN pip install --upgrade pip
 
 # install selenium
-RUN pip install selenium
+RUN pip install selenium lxml bs4 pandas
 RUN apt-get update && apt-get install -y git 
 RUN git clone https://github.com/galigutta/earn-date.git
 
@@ -33,18 +33,6 @@ RUN chmod +x startscript.sh
 ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-ENV LC_ALL C
-ENV DEBIAN_FRONTEND noninteractive
-ENV DEBCONF_NONINTERACTIVE_SEEN true
-RUN /opt/firefox/firefox -CreateProfile "headless /moz-headless"  -headless
 #ADD user.js /moz-headless/
 
 ENTRYPOINT ["sh","-c","./startscript.sh"]
-
-#EXPOSE 4444
-
-#ENTRYPOINT ["geckodriver"]
-
-#CMD ["--binary=/opt/firefox/firefox", "--log=debug", "--host=0.0.0.0"]
-
-
