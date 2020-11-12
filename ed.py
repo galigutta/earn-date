@@ -36,16 +36,20 @@ for i in tl:
     soup = BeautifulSoup(driver.page_source, features="lxml")
     table = soup.find_all('table')[1]
     rows = table.find_all('tr')
-    print(i)
+    # print(i)
     for tr in rows:
         th = tr.find_all('th')
         row = [i.text for i in th]
         ed = row[0].strip()
-        dfEar = dfEar.append(pd.DataFrame([[i,ed]],columns = ['Ticker','Date']))
+        if ed[:1].isnumeric():
+            dfEar = dfEar.append(pd.DataFrame([[i,ed]],columns = ['Ticker','Date']))
     sleep(10)
 
 dfEar.to_csv('earDateYC.csv', index = False)
 driver.close()
 
-with open("earDateYC.csv", "rb") as f:
-    s3.upload_fileobj(f, "earn-dt", "edate.csv")
+try:
+    with open("earDateYC.csv", "rb") as f:
+        s3.upload_fileobj(f, "earn-dt", "edate.csv")
+except:
+    print('Unable to write to S3, probably not running on AWS')
