@@ -22,7 +22,7 @@ df = pd.read_csv(fname,header = None)
 tl = list(df[0])[:3]
 dfEar = pd.DataFrame(columns = ['Ticker','Date'])
 
-driver = webdriver.Chrome(options=chrome_options)
+driver = webdriver.Chrome(options=set_chrome_options())
 
 for i in tl:
     url = 'https://ycharts.com/companies/'+i+'/events/#/?eventTypes=earnings,&pageNum=1'
