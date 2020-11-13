@@ -51,6 +51,7 @@ for row in  dft.itertuples():
         if con['Accepted'][:4] == '2014':
             break
 
+dfSECFileTimes['AfterClose'] = dfSECFileTimes['earn_datetime'].str[11:13].astype(int) >13
 dfSECFileTimes.to_csv('SECFileTimes.csv', index = False)
 
 try:
