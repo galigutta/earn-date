@@ -5,6 +5,7 @@ from selenium import webdriver
 import pandas as pd
 import boto3
 from selenium.webdriver.chrome.options import Options
+from datetime import date,datetime
 
 def set_chrome_options() -> None:
     """Sets chrome options for Selenium.
@@ -21,6 +22,7 @@ def set_chrome_options() -> None:
 
 fname = 'et.csv'
 s3 = boto3.client('s3')
+datestr=date.today().strftime("%Y-%m-%d")
 
 df = pd.read_csv(fname,header = None)
 tl = list(df[0])[:2]
@@ -50,6 +52,41 @@ driver.close()
 
 try:
     with open("earDateYC.csv", "rb") as f:
-        s3.upload_fileobj(f, "earn-dt", "edate.csv")
+        s3.upload_fileobj(f, "earn-dt", "edate.csv",ExtraArgs={'ContentType':'text/html','ACL':'public-read'})
+        s3.upload_fileobj(f, "earn-dt", "edate_"+datestr+".csv")
 except:
     print('Unable to write to S3, probably not running on AWS')
+
+
+'''
+SEC Code
+---
+from lxml import html
+from edgar import Company, Documents
+company = Company('placeholder', "0001633917")
+tree = company.get_all_filings(filing_type = "8-K")
+hrefs = tree.xpath('//*[@id="documentsbutton"]')
+print(len(hrefs))
+for i in hrefs[:15]:
+    lnk = 'https://www.sec.gov' + i.get('href')
+    con = Documents(lnk).content
+    if con['Items'][:10] == 'Item 2.02:':
+        #print(con['Accepted'])
+        print(" ".join([con['Accepted'],lnk]))
+
+join code
+import pandas as pd
+tfile = 'ticker.txt'
+cols = ['ticker','id']
+dfmap = pd.read_csv(tfile, sep='\\t', engine = 'python', header = None)
+dfmap.columns = cols
+dfmap['ticker'] = dfmap['ticker'].str.upper()
+dfmap['id'] = dfmap['id'].astype(str).str.zfill(10)
+
+dft = pd.read_csv('et.csv',header = None)
+dft.columns = ['ticker']
+
+dft = dft.merge(dfmap, on='ticker', how='inner')
+dft = dft.drop_duplicates()
+
+'''
