@@ -45,7 +45,7 @@ for i in tl:
         ed = row[0].strip()
         if ed[:1].isnumeric():
             dfEar = dfEar.append(pd.DataFrame([[i,ed]],columns = ['Ticker','Date']))
-    sleep(10)
+    sleep(20)
 
 dfEar.to_csv('earDateYC.csv', index = False)
 driver.close()
