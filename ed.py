@@ -50,14 +50,14 @@ for i in tl:
 dfEar.to_csv('earDateYC.csv', index = False)
 driver.close()
 
-# try:
-with open("earDateYC.csv", "rb") as f:
-    s3.upload_fileobj(f, "earn-dt", "edate.csv",ExtraArgs={'ContentType':'text/html','ACL':'public-read'})
-# need to re-open and archive
-with open("earDateYC.csv", "rb") as f:    
-    s3.upload_fileobj(f, "earn-dt", "edate_"+datestr+".csv",ExtraArgs={'ContentType':'text/html','ACL':'public-read'})
-# except:
-#     print('Unable to write to S3, probably not running on AWS')
+try:
+    with open("earDateYC.csv", "rb") as f:
+        s3.upload_fileobj(f, "earn-dt", "edate.csv",ExtraArgs={'ContentType':'text/html','ACL':'public-read'})
+    # need to re-open and archive
+    with open("earDateYC.csv", "rb") as f:    
+        s3.upload_fileobj(f, "earn-dt", "edate_"+datestr+".csv",ExtraArgs={'ContentType':'text/html','ACL':'public-read'})
+except:
+    print('Unable to write to S3, probably not running on AWS')
 
 
 '''
