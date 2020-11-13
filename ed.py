@@ -25,7 +25,7 @@ s3 = boto3.client('s3')
 datestr=date.today().strftime("%Y-%m-%d")
 
 df = pd.read_csv(fname,header = None)
-tl = list(df[0])[:2]
+tl = list(df[0])
 dfEar = pd.DataFrame(columns = ['Ticker','Date'])
 
 driver = webdriver.Chrome(options=set_chrome_options())
