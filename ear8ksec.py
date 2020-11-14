@@ -45,7 +45,7 @@ for row in  dft.itertuples():
         lnk = 'https://www.sec.gov' + i.get('href')
         con = Documents(lnk).content
         sleep(5)
-        if con['Items'][:10] == 'Item 2.02:':
+        if con['Items'].find('Item 2.02:') > 0 :
             dfSECFileTimes = dfSECFileTimes.append(pd.DataFrame([[row.ticker, con['Accepted']]], columns = dfsftcols))
             print(" ".join([row.ticker, con['Accepted'],lnk]))
         if con['Accepted'][:4] == '2014':
