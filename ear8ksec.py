@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Nov 12 16:56:12 2020
-
-@author: vamsi
-"""
 from lxml import html
 from time import sleep
 from edgar import Company, Documents
@@ -40,18 +33,19 @@ for row in  dft.itertuples():
     company = Company(row.ticker, row.id)
     tree = company.get_all_filings(filing_type = "8-K")
     hrefs = tree.xpath('//*[@id="documentsbutton"]')
-    print(len(hrefs))
-    for i in hrefs:
-        lnk = 'https://www.sec.gov' + i.get('href')
-        con = Documents(lnk).content
-        sleep(5)
-        if con['Items'].find('Item 2.02:') > 0 :
+    descs = tree.xpath('//div[4]/div[4]//td[3]')
+
+    for i in zip(descs,hrefs):
+        if i[0].text_content().strip().find(' 2.02 ') > -1 :
+            lnk = 'https://www.sec.gov' + i[1].get('href')
+            con = Documents(lnk).content
+            if con['Accepted'][:4] == '2018':
+                break
+            sleep(0.5)
             dfSECFileTimes = dfSECFileTimes.append(pd.DataFrame([[row.ticker, con['Accepted']]], columns = dfsftcols))
             print(" ".join([row.ticker, con['Accepted'],lnk]))
-        if con['Accepted'][:4] == '2014':
-            break
-
-# dfSECFileTimes['AfterClose'] = dfSECFileTimes['earn_datetime'].str[11:13].astype(int) >13
+    break
+dfSECFileTimes['AfterClose'] = dfSECFileTimes['earn_datetime'].str[11:13].astype(int) >13
 dfSECFileTimes.to_csv('SECFileTimes.csv', index = False)
 
 try:
