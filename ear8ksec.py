@@ -41,7 +41,7 @@ for row in  dft.itertuples():
             con = Documents(lnk).content
             if con['Accepted'][:4] == '2014':
                 break
-            sleep(0.5)
+            sleep(0.2)
             dfSECFileTimes = dfSECFileTimes.append(pd.DataFrame([[row.ticker, con['Accepted']]], columns = dfsftcols))
             print(" ".join([row.ticker, con['Accepted'],lnk]))
     # break 
