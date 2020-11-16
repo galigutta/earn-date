@@ -36,7 +36,7 @@ for row in  dft.itertuples():
     descs = tree.xpath('//div[4]/div[4]//td[3]')
 
     for i in zip(descs,hrefs):
-        if i[0].text_content().strip().find(' 2.02 ') > -1 :
+        if i[0].text_content().strip().find(' 2.02') > -1 :
             lnk = 'https://www.sec.gov' + i[1].get('href')
             con = Documents(lnk).content
             if con['Accepted'][:4] == '2014':
