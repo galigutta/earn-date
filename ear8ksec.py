@@ -39,12 +39,12 @@ for row in  dft.itertuples():
         if i[0].text_content().strip().find(' 2.02 ') > -1 :
             lnk = 'https://www.sec.gov' + i[1].get('href')
             con = Documents(lnk).content
-            if con['Accepted'][:4] == '2018':
+            if con['Accepted'][:4] == '2014':
                 break
             sleep(0.5)
             dfSECFileTimes = dfSECFileTimes.append(pd.DataFrame([[row.ticker, con['Accepted']]], columns = dfsftcols))
             print(" ".join([row.ticker, con['Accepted'],lnk]))
-    break
+    # break
 dfSECFileTimes['AfterClose'] = dfSECFileTimes['earn_datetime'].str[11:13].astype(int) >13
 dfSECFileTimes.to_csv('SECFileTimes.csv', index = False)
 
