@@ -44,7 +44,7 @@ for row in  dft.itertuples():
             sleep(0.5)
             dfSECFileTimes = dfSECFileTimes.append(pd.DataFrame([[row.ticker, con['Accepted']]], columns = dfsftcols))
             print(" ".join([row.ticker, con['Accepted'],lnk]))
-    # break
+    # break 
 dfSECFileTimes['AfterClose'] = dfSECFileTimes['earn_datetime'].str[11:13].astype(int) >13
 dfSECFileTimes.to_csv('SECFileTimes.csv', index = False)
 
